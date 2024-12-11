@@ -82,7 +82,6 @@ A ROS module that utilizes the camera of a robot to identify, track, and align m
 
 ---
 
-<<<<<<< HEAD
 ## Install and run
 
 First of all, you need to download the repository with the following command inside your workspace:
@@ -108,6 +107,3 @@ Inside the `/src/Experimental_Robotics` of your root directory and use:
 Finally, to run the code, type the following command:
 
     bash launch_exp.sh
-=======
-## Install and run
->>>>>>> parent of 2f9a082 (update readme)
