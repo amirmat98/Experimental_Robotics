@@ -86,24 +86,36 @@ A ROS module that utilizes the camera of a robot to identify, track, and align m
 
 First of all, you need to download the repository with the following command inside your workspace:
 
+    ```bash
     git clone https://github.com/amirmat98/Experimental_Robotics.git
+    ```
 
 Then, you have to checkout the `Assignment1` branch:
 
+    ```bash
     git checkout Assignment1
+    ```
 
 From the root directory of your ROS2 workspace run the command:
 
+    ```bash
     colcon build
+    ```
 
 Now, you have to install `konsole` with the command:
 
+    ```bash
     sudo apt-get install konsole
+    ```
 
 Inside the `/src/Experimental_Robotics` of your root directory and use:
 
+    ```bash
     chmod u+x launch_exp.sh
+    ```
     
 Finally, to run the code, type the following command:
 
+    ```bash
     bash launch_exp.sh
+    ```
