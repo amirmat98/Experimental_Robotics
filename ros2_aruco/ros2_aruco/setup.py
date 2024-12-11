@@ -13,15 +13,16 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='Marco Meschini',
-    maintainer_email='mmeschini01@gmail.com',
-    description='TODO: Package description',
-    license='TODO: License declaration',
+    maintainer='AmirMahdi Matin',
+    maintainer_email='5884715@studenti.unige.it',
+    description='Package description',
+    license='License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
             'aruco_node = ros2_aruco.aruco_node:main',
             'aruco_generate_marker = ros2_aruco.aruco_generate_marker:main',
+            'marker_detector = ros2_aruco.marker_detector:main',
             'camera_marker_detector = ros2_aruco.camera_marker_detector:main'
         ],
     },
