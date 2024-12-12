@@ -1,7 +1,9 @@
 # Experimental_Robotics - Assignemnt 1
 This repository contains the implementation of the **Assignment 1** for the Experimental Robotics Lab.
 
-## Author: AmirMahdi Matin - 5884715
+## Author 
+AmirMahdi Matin - 5884715 <br/>
+Sayna Arghideh - 5934809
 
 ---
 
@@ -25,6 +27,8 @@ A ROS module that utilizes the camera of a robot to identify, track, and align m
 ---
 
 ## The robot
+
+We have developed a flexible mobile platform that includes all the necessary components for perception and navigation. The *link_chassis* element defines the primary chassis, which is the structural backbone of the robot and where its vital components are housed. It also provides stability. Two wheels, *link_right_wheel* and *link_left_wheel*, are fastened to the chassis by means of continuous joints, which allow for seamless and uninterrupted movement. 
 
 
 ---
