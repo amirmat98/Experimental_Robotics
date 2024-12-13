@@ -1,6 +1,8 @@
 # Experimental_Robotics - Assignemnt 1
 This repository contains the implementation of the **Assignment 1** for the Experimental Robotics Lab.
 
+---
+
 ## Author 
 AmirMahdi Matin - 5884715 <br/>
 Sayna Arghideh - 5934809
@@ -24,6 +26,12 @@ Sayna Arghideh - 5934809
 
 A ROS module that utilizes the camera of a robot to identify, track, and align markers. The robot is encircled by the markings. With this package, the robot can find markers, move to them, and highlight them on the camera stream. The code is written in two distinct ways. In the first 'camera_fix_controller.py' script, the entire vehicle chassis spins to pick up on the markers that have been set all around it. In the second piece of code, "camera_rotating_controller.py," the car's chassis remains stationary while the link carrying the camera spins.
 
+<br/>
+<figure>
+<img src="https://raw.githubusercontent.com/amirmat98/Experimental_Robotics/refs/heads/Assignment1/readme/robot.png" style="width:60%">
+</figure>
+<br/>
+
 ---
 
 ## The robot
@@ -35,54 +43,14 @@ We have developed a flexible mobile platform that includes all the necessary com
 
 ## Script
 
+we implement two different scripts that are located in `ros2_aruco` directory.
+
+1- **`marker_detector`**: carries out the operation where the whole robot navigates to locate the markers.<br/>
+2- **`camera_marker_detector`**: implements the behaviour where only the camera moves to find the markers.
+
 ---
 
 ## Logic
-
----
-
-## Details
-
-### The Nodes
-
----
-
-### Contoller
-
-#### Subscribers
-
-#### Publishers
-
-#### Timer
-
-#### Internal Variables
-
-#### Controller
-
----
-
-### Motor Control
-
-#### Subscribers
-
-#### Publishers
-
-#### Internal Variables
-
-#### Timer and Controller Logic
-
-
----
-
-### Revolute Node
-
-#### Subscribers
-
-#### Publisher
-
-#### Internal Variables
-
-#### Timer and Controller Logic
 
 ---
 
@@ -111,3 +79,10 @@ Inside the `/src/Experimental_Robotics` of your root directory and use:
 Finally, to run the code, type the following command:
 
     bash launch_exp.sh
+
+
+## Testing
+
+This video shows the robot moving around in the Gazebo and interacting with its environment. Viewers may see the robot's actions and reactions to its surroundings in action in the video.
+
+https://github.com/amirmat98/Experimental_Robotics/blob/Assignment1/readme/Gazebo_rob.mp4
