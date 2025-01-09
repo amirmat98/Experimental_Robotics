@@ -2,41 +2,60 @@
 #include "camMover.hpp"
 #include "robotMover.hpp"
 #include <iostream>
+#include <cstdlib>
 #include <memory>
 #include <rclcpp/executors.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/utilities.hpp>
 
+using namespace std;
+
+const int TIME_SLEEP = 10;
+
 int main(int argc, char** argv)
 {
-  using namespace std::chrono_literals;
+  using namespace chrono_literals;
   rclcpp::init(argc, argv);
   char c;
+  
+  cout<<"Hi!"<<endl;
+  cout<<"We are Amir and Sayna"<<endl;
+  cout<<"Welcome to the experimental robotics laboratory!"<<endl;
+  cout<<"Please Wait ..."<<endl;
 
-  std::cout << "STARTED" << std::endl;
-  std::cout << "+------------------------------------------------------------+\n"
-               "|                                                            |\n"
-               "|   Assignment 1 for Experimental robotics laboratory        |\n"
-               "|                                                            |\n"
-               "|   Press:                                                   |\n"
-               "|     > c in order to detect the markers with the camera     |\n"
-               "|     > r in order to detect the markers with the movement   |\n"
-               "|       of the whole robot                                   |\n"
-               "|                                                            |\n"
-               "+------------------------------------------------------------+\n"
-            << std::endl;
+  for (int i = 0; i<TIME_SLEEP; i++)
+  {
+    cout<<"Please Wait "<< TIME_SLEEP - i << "seceonds!"<<endl;
+    // Wait 10 seconds for the system to be ready
+    time.sleep(TIME_SLEEP);
+  }
 
-  std::cout << "Selection :";
-  std::cin >> c;
+  system("clear");
 
-  // This is done to stick to the requirement that we should implement the aruco seeking behaviour with two different
-  // nodes
+
+  cout << "Running..." << std::endl;
+  cout << "+------------------------------------------------------------------+\n"
+          "|     Assignment 1 for Experimental robotics laboratory            |\n"
+          "|                                                                  |\n"
+          "|     > c detect the markers with the camera                       |\n"
+          "|     > r detect the markers with the movement of the whole robot  |\n"
+          "|                                                                  |\n"
+          "+------------------------------------------------------------------+\n"
+        << std::endl;
+
+  cout << "Selection :";
+  cin >> c;
+
+  system("clear");
+
   if (c == 'c')
   {
+    cout<<"Marker Detection by the camera"<<endl;
     rclcpp::spin(std::make_shared<CamMover>());
   }
   else
   {
+    cout<<"Marker Detection by the whole robot"<<endl;
     rclcpp::spin(std::make_shared<RobotMover>());
   }
 
