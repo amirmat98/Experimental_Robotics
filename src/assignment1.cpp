@@ -27,7 +27,7 @@ int main(int argc, char** argv)
   {
     cout<<"Please Wait "<< TIME_SLEEP - i << "seceonds!"<<endl;
     // Wait 10 seconds for the system to be ready
-    time.sleep(TIME_SLEEP);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
   }
 
   system("clear");
