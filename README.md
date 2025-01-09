@@ -95,4 +95,5 @@ Now you can run the package.
 
 This video shows the robot moving around in the Gazebo and interacting with its environment. Viewers may see the robot's actions and reactions to its surroundings in action in the video.
 
-https://github.com/amirmat98/Experimental_Robotics/blob/Assignment1/readme/Gazebo_rob.mp4
+
+https://github.com/amirmat98/Experimental_Robotics/blob/Assignment1/readme/Assignment1_Simulation.mp4
