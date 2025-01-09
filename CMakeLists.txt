@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(exprob_dt)
-
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+project(erl1_amirmat98)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)

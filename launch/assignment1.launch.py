@@ -7,7 +7,7 @@ import os
 
 
 def generate_launch_description():
-    assignment_path = FindPackageShare(package="exprob_dt").find("exprob_dt")
+    assignment_path = FindPackageShare(package="erl1_amirmat98").find("erl1_amirmat98")
     urdf_path = os.path.join(assignment_path, "urdf")
     worlds_path = os.path.join(assignment_path, "worlds")
     rviz_config_path = os.path.join(assignment_path, "config")
@@ -46,7 +46,7 @@ def generate_launch_description():
         arguments=["camera_velocity_controller"]
     )
 
-    run_assignment = Node(package="exprob_dt",
+    run_assignment = Node(package="erl1_amirmat98",
                           executable="assignment1",
                           # prefix=['gdbserver localhost:3000'],
                           prefix = ["lxterminal -e"],
