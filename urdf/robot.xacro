@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot">
-    <xacro:include filename="$(find erl1_amirmat98)/urdf/robot.gazebo"/>
+<xacro:include filename="$(find erl1_amirmat98)/urdf/robot.gazebo"/>
 
     <xacro:property name="length_wheel" value="0.04" />
     <xacro:property name="radius_wheel" value="0.1" />
@@ -127,77 +127,66 @@
         <joint_properties damping="1.0" friction="1.0"/>
     </joint>
 
-    <link name="camera_optical_link">
-        <inertial>
-            <mass value="0" />
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
-        </inertial> 
-    </link>
+    <link name="camera_link_connection">
+	    <collision>
+	      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+	      <geometry>
+		<box size="0.05 0.05 0.15"/>
+	      </geometry>
+	    </collision>
+	    <visual>
+	      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+	      <geometry>
+		<box size="0.05 0.05 0.15"/>
+	      </geometry>
+	      <material name="red">
+		<color rgba="1 0 0 1"/>
+	      </material>
+	    </visual>
+	    <inertial>
+	      <mass value="1e-5" />
+	      <origin xyz="0 0 0" rpy="0 0 0"/>
+	      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+	    </inertial> 
+  </link>
 
-    <!--https://wiki.ros.org/urdf/XML/joint-->
-    <joint name="camera_optical_joint" type="fixed">
-        <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708"/>
-        <parent link="camera_link"/>
-        <child link="camera_optical_link"/>
-    </joint>
 
-    <link name="camera_link">
-        <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-            <geometry>
-                <cylinder length="0.05" radius="0.1"/>
-            </geometry>
-        </collision>
-        <visual>
-            <origin xyz="0 0 0.0" rpy="0 0 0"/>
-            <geometry>
-                <cylinder length="0.05" radius="0.1"/>
-            </geometry>
-            <material name="red">
-                <color rgba="1 0 0 1"/>
-            </material>
-        </visual>
-        <xacro:default_inertial mass="0.001"/>
-    </link>
+  <link name="camera_link">
+	    <collision>
+	      <origin xyz="0 0 0" rpy="0 0 0"/>
+	      <geometry>
+		<box size="0.07 0.07 0.07"/>
+	      </geometry>
+	    </collision>
+	    <visual>
+	      <origin xyz="0 0 0" rpy="0 0 0"/>
+	      <geometry>
+		<box size="0.07 0.07 0.07"/>
+	      </geometry>
+	      <material name="red">
+		<color rgba="1 0 0 1"/>
+	      </material>
+	    </visual>
+	    <inertial>
+	      <mass value="1e-5" />
+	      <origin xyz="0 0 0" rpy="0 0 0"/>
+	      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+	    </inertial> 
+  </link>
+  
+  <joint name="camera_joint" type="continuous">
+	    <axis xyz="0 0 1" />
+	    <origin xyz="0 0 0.15" rpy="0 0 0"/>
+	    <parent link="camera_link_connection"/>
+	    <child link="camera_link"/> 
+	 </joint>
 
-    <joint name="camera_connection_joint" type = "fixed">
-        <origin xyz="0 0 0.125" rpy="0 0 0" />
-        <parent link="camera_connection_link"/>
-        <child link="camera_link" />
-    </joint>
-
-    <link name="camera_connection_link">
-        <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-            <geometry>
-                <cylinder length="0.20" radius="0.025"/>
-            </geometry>
-        </collision>
-        <visual>
-            <origin xyz="0 0 0.0" rpy="0 0 0"/>
-            <geometry>
-                <cylinder length="0.20" radius="0.025"/>
-            </geometry>
-            <material name="red">
-                <color rgba="1 0 0 1"/>
-            </material>
-        </visual>
-        <xacro:default_inertial mass="0.02"/>
-        <!--<inertial>-->
-        <!--    <mass value="1e-5" />-->
-        <!--    <origin xyz="0 0 0" rpy="0 0 0"/>-->
-        <!--    <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />-->
-        <!--</inertial> -->
-    </link>
-
-    <joint name="camera_joint" type="continuous">
-        <parent link="link_chassis"/>
-        <child link="camera_connection_link"/> 
-        <axis xyz="0 0 1" />
-        <origin xyz="0.1 0.0 0.13" rpy="0 0 0"/>
-        <dynamics damping="0.1"/>
-        <limit effort="10000" velocity="100" />
-    </joint>
+  <joint name="camera_link_joint" type="fixed">
+	    <axis xyz="0 0 1" />
+	    <origin xyz="0.2 0 0.05" rpy="0 0 0"/>
+	    <parent link="link_chassis"/>
+	    <child link="camera_link_connection"/> 
+	 </joint>
+    
 
 </robot>
