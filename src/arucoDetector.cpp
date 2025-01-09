@@ -2,23 +2,17 @@
 #include <iostream>
 #include <sensor_msgs/msg/detail/image__struct.hpp>
 
-/**
- * @brief Creates the aruco detection node with cv::aruco::DICT_ARUCO_ORIGINAL as the dictionary
- */
+// Creates the aruco detection node with cv::aruco::DICT_ARUCO_ORIGINAL as the dictionary
 ArucoDetector::ArucoDetector()
 {
   detectorParams_ = cv::aruco::DetectorParameters::create();
   dict_ = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_ARUCO_ORIGINAL);
 }
 
-/**
- * @brief Call this function in order to detect the markers.
- *
- * After the call to this function all the members of the class will be updated
- * in order to be accessed.
- *
- * @param[in] img The image on which to do the detection
- */
+ //Call this function in order to detect the markers.
+ //After the call to this function all the members of the class will be updated
+ //in order to be accessed.
+ //The image on which to do the detection
 void ArucoDetector::detect(const sensor_msgs::msg::Image::ConstSharedPtr& img)
 {
   try

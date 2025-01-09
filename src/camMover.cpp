@@ -11,11 +11,8 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using namespace std::chrono_literals;
 
-/**
- * @brief Class for moving the camera of the robot
- *
- * In This case the movement of the camera is done so that It will go towards the closest aruco marker
- */
+//Class for moving the camera of the robot
+//In This case the movement of the camera is done so that It will go towards the closest aruco marker
 CamMover::CamMover() : Node("camMover")
 {
   mDetectionPublisher_ = this->create_publisher<sensor_msgs::msg::Image>("/assignment/detected_markers", 1);
@@ -31,14 +28,10 @@ CamMover::CamMover() : Node("camMover")
   startRotation();
 }
 
-/**
- * @brief Function to get the different arucos and save their position
- *
- * @param img Image in which to do the detection of the aruco
- * @param js Current joint state of the camera
- */
-void CamMover::getCurrentFrame(const sensor_msgs::msg::Image::ConstSharedPtr& img,
-                               const sensor_msgs::msg::JointState::ConstSharedPtr& js)
+ //Function to get the different arucos and save their position
+ //Image in which to do the detection of the aruco
+ //Current joint state of the camera
+void CamMover::getCurrentFrame(const sensor_msgs::msg::Image::ConstSharedPtr& img, const sensor_msgs::msg::JointState::ConstSharedPtr& js)
 {
   mArucoDetector_.detect(img);
   cv::Mat& cf = mArucoDetector_.currentFrame_;
@@ -114,15 +107,7 @@ void CamMover::getCurrentFrame(const sensor_msgs::msg::Image::ConstSharedPtr& im
           RCLCPP_INFO(this->get_logger(), "Published image of marker id: %d", id);
           std::string displayString = "Id: " + std::to_string(id);
           cv::circle(cf, cv::Point(xCenter, yCenter), radius, cv::Scalar(0, 255, 0), 3);
-          cv::putText(cf, displayString, cv::Point(xCenter + radius, yCenter - radius), cv::FONT_HERSHEY_COMPLEX, 1,
-                      cv::Scalar(255, 0, 0), 3);
-
-          
-          // ### Uncomment this section to have directly the visualizations of the detection
-          // cv_bridge::CvImagePtr p = cv_bridge::toCvCopy(*mArucoDetector_.getFrameAsImgMsg(), sensor_msgs::image_encodings::BGR8);
-          // cv::Mat m = p->image;
-          // cv::imshow("MsgPreview", m);
-          // cv::waitKey(10);
+          cv::putText(cf, displayString, cv::Point(xCenter + radius, yCenter - radius), cv::FONT_HERSHEY_COMPLEX, 1, cv::Scalar(255, 0, 0), 3);
 
           mDetectionPublisher_->publish(*mArucoDetector_.getFrameAsImgMsg());
           ++mCurrentSearchingIndex_;
@@ -139,15 +124,12 @@ void CamMover::getCurrentFrame(const sensor_msgs::msg::Image::ConstSharedPtr& im
   }
 }
 
-/**
- * @brief Starts the rotation of the camera
- *
- * Note that in the real robot this should be called with a timer, while in simulation only once is enough
- */
+//Starts the rotation of the camera
+//Note that in the real robot this should be called with a timer, while in simulation only once is enough
 void CamMover::startRotation()
 {
   using namespace std::chrono_literals;
-  RCLCPP_INFO(this->get_logger(), "Started rotation");
+  RCLCPP_INFO(this->get_logger(), "Rotation is started...");
   std_msgs::msg::Float64MultiArray cmdVel;
   cmdVel.data.emplace_back(0.5);
   while (!mVelocityPublisher_->get_subscription_count())
@@ -163,27 +145,23 @@ void CamMover::startRotation()
  */
 void CamMover::stopRotation()
 {
-  RCLCPP_INFO(this->get_logger(), "Stopped rotation");
+  RCLCPP_INFO(this->get_logger(), "Rotation is stopped");
   std_msgs::msg::Float64MultiArray cmdVel;
   cmdVel.data.emplace_back(0);
   mVelocityPublisher_->publish(cmdVel);
 }
 
-/**
- * @brief Implementation of the euclidean modulus
- *
- * @param num Dividend of the division
- * @param base Divisor of the division
- * @return Modulus in the euclidean sense (Like in Python)
- */
+//Implementation of the euclidean modulus
+//Dividend of the division
+//Divisor of the division
+//Modulus in the euclidean sense (Like in Python)
 float CamMover::euclMod(float num, float base)
 {
   return std::fmod((std::fmod(num, base) + base), base);
 }
 
-/**
- * @brief Simple timer for joint the camera joint velocity control
- */
+
+//Simple timer for joint the camera joint velocity control
 void CamMover::velCallback()
 {
   float diff = mTarget_ - euclMod(mCurrentJointPos_, 2 * M_PI);

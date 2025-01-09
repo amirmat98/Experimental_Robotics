@@ -10,24 +10,18 @@
 
 using std::placeholders::_1;
 
-/**
- * @brief Constructor for the movement of the robot
- */
+
+// Constructor for the movement of the robot
 RobotMover::RobotMover() : Node("aruco_controller")
 {
-  mCameraSubscriber_ = this->create_subscription<sensor_msgs::msg::Image>(
-      "/camera/image_raw", 1, std::bind(&RobotMover::getCurrentFrame, this, _1));
+  mCameraSubscriber_ = this->create_subscription<sensor_msgs::msg::Image>("/camera/image_raw", 1, std::bind(&RobotMover::getCurrentFrame, this, _1));
   mDetectionPublisher_ = this->create_publisher<sensor_msgs::msg::Image>("/assignment/detected_markers", 1);
   mVelocityPublisher_ = this->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", 10);
   mCurrentSearchingIndex_ = 0;
   startRotation();
 }
 
-/**
- * @brief Gets the current image for detection of the aruco
- *
- * @param img Current image got by the camera
- */
+// Gets the current image for detection of the aruco
 void RobotMover::getCurrentFrame(const sensor_msgs::msg::Image::SharedPtr img)
 {
     mArucoDetector_.detect(img);
@@ -62,8 +56,6 @@ void RobotMover::getCurrentFrame(const sensor_msgs::msg::Image::SharedPtr img)
     }
     else if (mDetectedIds_.size() == 5)
     {
-      // NOTE that the order is from top left clockwise
-      // NOTE that the the corners are given with the ORIGINAL order wich means with the correct orientation
       auto tl = mArucoDetector_.markerCorners_[index][0];
       auto br = mArucoDetector_.markerCorners_[index][2];
       auto xCenter = (tl.x + br.x) / 2;
@@ -77,10 +69,9 @@ void RobotMover::getCurrentFrame(const sensor_msgs::msg::Image::SharedPtr img)
           RCLCPP_INFO(this->get_logger(), "Published image of marker id: %d", id);
           std::string displayString = "Id: " + std::to_string(id);
           cv::circle(mArucoDetector_.currentFrame_, cv::Point(xCenter, yCenter), radius, cv::Scalar(0, 255, 0), 3);
-          cv::putText(mArucoDetector_.currentFrame_, displayString, cv::Point(xCenter + radius, yCenter - radius),
-                      cv::FONT_HERSHEY_COMPLEX, 1, cv::Scalar(255, 0, 0), 3);
+          cv::putText(mArucoDetector_.currentFrame_, displayString, cv::Point(xCenter + radius, yCenter - radius), cv::FONT_HERSHEY_COMPLEX, 1, cv::Scalar(255, 0, 0), 3);
 
-          // ### Uncomment this section to have directly the visualizations of the detection
+          // Uncomment this section to have directly the visualizations of the detection
           // cv_bridge::CvImagePtr p = cv_bridge::toCvCopy(*mArucoDetector_.getFrameAsImgMsg(), sensor_msgs::image_encodings::BGR8);
           // cv::Mat m = p->image;
           // cv::imshow("MsgPreview", m);
@@ -97,15 +88,12 @@ void RobotMover::getCurrentFrame(const sensor_msgs::msg::Image::SharedPtr img)
   }
 }
 
-/**
- * @brief Starts the rotation of the robot
- *
- * Note that on the real robot this has to be called with a timer
- */
+
+// Note that on the real robot this has to be called with a timer
 void RobotMover::startRotation()
 {
   using namespace std::chrono_literals;
-  RCLCPP_INFO(this->get_logger(), "Started rotation");
+  RCLCPP_INFO(this->get_logger(), "Rotation is started...");
   geometry_msgs::msg::Twist cmdVel;
   cmdVel.angular.z = 1;
   while (!mVelocityPublisher_->get_subscription_count())
@@ -116,12 +104,10 @@ void RobotMover::startRotation()
   mVelocityPublisher_->publish(cmdVel);
 }
 
-/**
- * @brief Stops the rotation of the robot
- */
+// Stops the rotation of the robot
 void RobotMover::stopRotation()
 {
-  RCLCPP_INFO(this->get_logger(), "Stopped rotation");
+  RCLCPP_INFO(this->get_logger(), "Rotation is stopped");
   geometry_msgs::msg::Twist cmdVel;
   cmdVel.angular.z = 0;
   mVelocityPublisher_->publish(cmdVel);

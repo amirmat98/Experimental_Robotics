@@ -56,29 +56,11 @@ we implement two different scripts that are located in `ros2_aruco` directory.
 
 ## Install and run
 
-First of all, you need to download the repository with the following command inside your workspace:
+First of all, you need to download the repository with the following command inside your workspace
 
-    git clone https://github.com/amirmat98/Experimental_Robotics.git
+    git clone -b Assignment1 https://github.com/amirmat98/Experimental_Robotics.git
 
-Then, you have to checkout the `Assignment1` branch:
-
-    git checkout Assignment1
-
-From the root directory of your ROS2 workspace run the command:
-
-    colcon build
-
-Now, you have to install `konsole` with the command:
-
-    sudo apt-get install konsole
-
-Inside the `/src/Experimental_Robotics` of your root directory and use:
-
-    chmod u+x launch_exp.sh
-    
-Finally, to run the code, type the following command:
-
-    bash launch_exp.sh
+Then, put `ros2_aruco` package into your src directory.
 
 
 ## Testing
