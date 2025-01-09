@@ -36,17 +36,17 @@ A ROS module that utilizes the camera of a robot to identify, track, and align m
 
 ## The robot
 
-We have developed a flexible mobile platform that includes all the necessary components for perception and navigation. The *link_chassis* element defines the primary chassis, which is the structural backbone of the robot and where its vital components are housed. It also provides stability. Two wheels, *link_right_wheel* and *link_left_wheel*, are fastened to the chassis by means of continuous joints, which allow for seamless and uninterrupted movement. 
-
+We have developed a flexible mobile platform that includes all the necessary components for perception and navigation. The *link_chassis* element defines the primary chassis, which is the structural backbone of the robot and where its vital components are housed. It also provides stability. Two wheels, *link_right_wheel* and *link_left_wheel*, are fastened to the chassis by means of continuous joints, which allow for seamless and uninterrupted movement.
+A notable characteristic of this robot is its advanced camera system, consisting of the components link_camera_rot and camera_link. The camera is installed on a rotational joint, joint_camera_rot, enabling dynamic adjustments to its orientation. This functionality significantly enhances the robot's ability to perceive and interact with its surroundings.
 
 ---
 
 ## Script
 
-we implement two different scripts that are located in `ros2_aruco` directory.
-
-1- **`marker_detector`**: carries out the operation where the whole robot navigates to locate the markers.<br/>
-2- **`camera_marker_detector`**: implements the behaviour where only the camera moves to find the markers.
+we have implemented 3 classes to implement this project.
+ **`arucoDetector`**: this class for detecting the presence of Markers.
+ **`camMover`**: implements the behaviour where only the camera moves to find the markers.
+ **`robotMover`**: implements the behaviour where the entire robot moves to find the markers.
 
 ---
 
@@ -56,11 +56,39 @@ we implement two different scripts that are located in `ros2_aruco` directory.
 
 ## Install and run
 
-First of all, you need to download the repository with the following command inside your workspace
+The best way to run this package is to use this docker image. this container is a ubuntu 20 and [Ros2 foxy](https://docs.ros.org/en/foxy/index.html).
+
+    https://hub.docker.com/r/carms84/noetic_ros2
+
+Then You should install the following packages:
+
+    sudo apt install ros-foxy-ros2-control
+    sudo apt install ros-foxy-ros2-controllers
+
+After that you should clone two packages in your workspace's src folder. You need to go to the src folder of your workspace and then use below commands to clone the packages.
 
     git clone -b Assignment1 https://github.com/amirmat98/Experimental_Robotics.git
+    
+    git clone https://github.com/CarmineD8/ros2_aruco.git
 
-Then, put `ros2_aruco` package into your src directory.
+Now you should see two folder in your src folder with name of `Experimental_Robotics` and `ros2_aruco`.
+
+then get back to the root of your workspace and build packages.
+
+        cd ..
+
+        source /opt/ros/foxy/setup.bash
+
+        colcon build
+
+        source install/setup.bash
+
+Now you can run the package.
+
+    ros2 launch erl1_amirmat98 assignment1.launch.py
+
+
+
 
 
 ## Testing
