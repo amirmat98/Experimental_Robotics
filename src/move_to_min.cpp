@@ -17,12 +17,17 @@
 
 using namespace std::chrono_literals;
 
-class MoveAction : public plansys2::ActionExecutorClient {
+/**
+ * @class MoveToMinAction
+ * @brief Used to move to the minimum valued aruco node
+ *
+ */
+class MoveToMinAction : public plansys2::ActionExecutorClient {
 public:
   /**
-   * @brief Constructor that initializes all the waypoints
+   * @brief Sets up nodes and callbacks for the function
    */
-  MoveAction() : plansys2::ActionExecutorClient("move", 500ms) {
+  MoveToMinAction() : plansys2::ActionExecutorClient("move_to_min", 500ms) {
     geometry_msgs::msg::PoseStamped wp;
     wp.header.frame_id = "/map";
     wp.header.stamp = now();
@@ -51,13 +56,13 @@ public:
     pos_sub_ =
         create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
             "/amcl_pose", 10,
-            std::bind(&MoveAction::current_pos_callback, this, _1));
+            std::bind(&MoveToMinAction::current_pos_callback, this, _1));
   }
 
   /**
-   * @brief Gets the curret position of the robot
+   * @brief Gets the current position
    *
-   * @param msg The position given by the amcl node
+   * @param msg The Pose msg
    */
   void current_pos_callback(
       const geometry_msgs::msg::PoseWithCovarianceStamped::SharedPtr msg) {
@@ -65,14 +70,14 @@ public:
   }
 
   /**
-   * @brief Sets up the functions to allow updates of the running state of the node
+   * @brief Callback for the activation of the node
    *
-   * @param previous_state The previous state in which the node was
-   * @return The new state
+   * @param previous_state The previous State
+   * @return The updated state
    */
   rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
   on_activate(const rclcpp_lifecycle::State &previous_state) {
-    send_feedback(0.0, "Move starting");
+    send_feedback(0.0, "Move to min starting");
 
     navigation_action_client_ =
         rclcpp_action::create_client<nav2_msgs::action::NavigateToPose>(
@@ -107,11 +112,11 @@ public:
           send_feedback( // NOTE that 0.5 is the allowed error
               std::min(1.0, std::max(0.0, 1.0 - (feedback->distance_remaining /
                                                  dist_to_move))),
-              "Move running");
+              "Move to min running");
         };
 
     send_goal_options.result_callback = [this](auto) {
-      finish(true, 1.0, "Move completed");
+      finish(true, 1.0, "Move to min completed");
     };
 
     future_navigation_goal_handle_ = navigation_action_client_->async_send_goal(
@@ -162,9 +167,9 @@ private:
 
 int main(int argc, char **argv) {
   rclcpp::init(argc, argv);
-  auto node = std::make_shared<MoveAction>();
+  auto node = std::make_shared<MoveToMinAction>();
 
-  node->set_parameter(rclcpp::Parameter("action_name", "move"));
+  node->set_parameter(rclcpp::Parameter("action_name", "move_to_min"));
   node->trigger_transition(
       lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
 

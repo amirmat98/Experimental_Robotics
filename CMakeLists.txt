@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 project(assignment2_exprob_tm)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_BUILD_TYPE RELEASE)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -14,7 +15,7 @@ if(NOT CMAKE_CXX_STANDARD)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
+  add_compile_options(-Wall -Wextra -Wpedantic -O2)
 endif()
 
 # find dependencies
@@ -22,7 +23,6 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(geometry_msgs REQUIRED)
-find_package(ros2_aruco_interfaces REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(sensor_msgs REQUIRED)
@@ -39,13 +39,20 @@ find_package(plansys2_problem_expert REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
-add_executable(assignment2_exprob_tm src/assignment2_exprob_tm.cpp)
 add_executable(move_action_node src/move_action_node.cpp)
-add_executable(explore_waypoint_action_node src/explore_waypoint_action_node.cpp)
+add_executable(explore_waypoint_action_node src/explore_waypoint_action_node.cpp src/arucoDetector.cpp)
 add_executable(mission_controller_node src/mission_controller_node.cpp)
+add_executable(move_to_min src/move_to_min.cpp)
 
-ament_target_dependencies(assignment2_exprob_tm rclcpp geometry_msgs ros2_aruco_interfaces cv_bridge OpenCV sensor_msgs message_filters)
+ament_target_dependencies(explore_waypoint_action_node rclcpp geometry_msgs cv_bridge OpenCV sensor_msgs message_filters)
 
+ament_target_dependencies(move_to_min
+  geometry_msgs
+  nav2_msgs
+  plansys2_executor
+  rclcpp
+  rclcpp_action
+)
 ament_target_dependencies(move_action_node
   geometry_msgs
   nav2_msgs
@@ -73,20 +80,21 @@ ament_target_dependencies(mission_controller_node
   rclcpp_action
 )
 
-target_include_directories(assignment2_exprob_tm PUBLIC
+
+target_include_directories(explore_waypoint_action_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 
 install(TARGETS 
-	assignment2_exprob_tm
 	move_action_node
 	explore_waypoint_action_node
 	mission_controller_node
+    move_to_min
 	
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY
-    launch urdf config worlds models
+    launch urdf config worlds models pddl
     DESTINATION share/${PROJECT_NAME}/
 )
 

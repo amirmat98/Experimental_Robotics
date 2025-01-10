@@ -16,13 +16,14 @@ def generate_launch_description():
     assignment2_exprob_tm_share = FindPackageShare(
         package='assignment2_exprob_tm').find('assignment2_exprob_tm')
     default_model_path = os.path.join(
-        assignment2_exprob_tm_share, 'urdf/robot.xacro')
+        assignment2_exprob_tm_share, 'urdf/robot.urdf')
     default_world_path = os.path.join(
         assignment2_exprob_tm_share, 'worlds/assignment2.world')
     config_path = os.path.join(assignment2_exprob_tm_share, 'config')
     models_path = os.path.join(assignment2_exprob_tm_share, "models")
-
-    assignment_dir = get_package_share_directory('assignment2_exprob_tm')
+    pddl_path = os.path.join(assignment2_exprob_tm_share, "pddl")
+    with open(default_model_path, 'r') as infp:
+        robot_desc = infp.read()
 
     gazebo_model_path = EnvironmentVariable(
         "GAZEBO_MODEL_PATH", default_value="")
@@ -31,15 +32,15 @@ def generate_launch_description():
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
-        parameters=[{'robot_description': Command(['xacro ', LaunchConfiguration('model')])},
-                    {'use_sim_time': False}]
+        parameters=[{'robot_description': robot_desc},
+                    {'use_sim_time': True}]
     )
 
     joint_state_publisher_node = Node(
         package='joint_state_publisher',
         executable='joint_state_publisher',
         name='joint_state_publisher',
-        parameters=[{'use_sim_time': False}]
+        parameters=[{'use_sim_time': True}]
     )
 
     nav2_bringup = IncludeLaunchDescription(
@@ -51,6 +52,7 @@ def generate_launch_description():
             )
         ),
         launch_arguments=[
+            ('autostart', 'true'),
             ('params_file', os.path.join(config_path, "nav2.yaml"))
         ]
     )
@@ -72,8 +74,16 @@ def generate_launch_description():
             get_package_share_directory('plansys2_bringup'),
             'launch',
             'plansys2_bringup_launch_monolithic.py')),
-        launch_arguments={'model_file': assignment_dir + '/pddl/patrol.pddl'}.items()
-        )
+        launch_arguments=[
+            ('model_file', os.path.join(pddl_path, 'domain.pddl'))]
+    )
+
+    move_to_min = Node(
+        package='assignment2_exprob_tm',
+        executable='move_to_min',
+        name='move_to_min',
+        output='screen',
+        parameters=[])
 
     move_cmd = Node(
         package='assignment2_exprob_tm',
@@ -81,7 +91,7 @@ def generate_launch_description():
         name='move_action_node',
         output='screen',
         parameters=[])
-    
+
     explore_waypoint_cmd = Node(
         package='assignment2_exprob_tm',
         executable='explore_waypoint_action_node',
@@ -89,15 +99,14 @@ def generate_launch_description():
         output='screen',
         parameters=[])
 
-    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
-
-    # GAZEBO_MODEL_PATH has to be correctly set for Gazebo to be able to find the model
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
-                        arguments=['-entity', 'my_test_robot',
+                        arguments=['-entity', 'robot',
                                    '-topic', '/robot_description', '-y', '3'],
                         output='screen')
 
     return LaunchDescription([
+        # GAZEBO_MODEL_PATH has to be correctly set for Gazebo to be able to
+        # find the model
         SetEnvironmentVariable(name="GAZEBO_MODEL_PATH",
                                value=gazebo_model_path),
         DeclareLaunchArgument(name='model', default_value=default_model_path,
@@ -109,6 +118,7 @@ def generate_launch_description():
         spawn_entity,
         plansys2_cmd,
         move_cmd,
+        move_to_min,
         explore_waypoint_cmd,
         ExecuteProcess(
             cmd=['gazebo', '--verbose', default_world_path, '-s',
@@ -118,4 +128,3 @@ def generate_launch_description():
             cmd=['rviz2', '-d', os.path.join(config_path, "rviz.rviz")],
             output='screen'),
     ])
-
