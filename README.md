@@ -1,5 +1,5 @@
 # Experimental_Robotics
-this a repository for ERL course of Master of Robotics engineering in Unige
+this a repository for ERL course of Master of Robotics engineering in Unige 2024-2025
 
 ## Authors
 AmirMahdi Matin - 5884715
