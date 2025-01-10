@@ -14,7 +14,7 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
     erl2_amirmat98_path_share = FindPackageShare(package='erl2_amirmat98').find('erl2_amirmat98')
-    default_model_path = os.path.join(erl2_amirmat98_path_share, 'urdf/rosbot.xacro')
+    default_model_path = os.path.join(erl2_amirmat98_path_share, 'urdf/robot2.urdf')
     default_world_path = os.path.join(erl2_amirmat98_path_share, 'worlds/assignment2.world')
     config_path = os.path.join(erl2_amirmat98_path_share, 'config')
     models_path = os.path.join(erl2_amirmat98_path_share, "models")
