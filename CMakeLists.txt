@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(assignment2_exprob_tm)
+project(erl2_amirmat98)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_BUILD_TYPE RELEASE)

@@ -13,20 +13,16 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
-    assignment2_exprob_tm_share = FindPackageShare(
-        package='assignment2_exprob_tm').find('assignment2_exprob_tm')
-    default_model_path = os.path.join(
-        assignment2_exprob_tm_share, 'urdf/robot.urdf')
-    default_world_path = os.path.join(
-        assignment2_exprob_tm_share, 'worlds/assignment2.world')
-    config_path = os.path.join(assignment2_exprob_tm_share, 'config')
-    models_path = os.path.join(assignment2_exprob_tm_share, "models")
-    pddl_path = os.path.join(assignment2_exprob_tm_share, "pddl")
+    erl2_amirmat98_path_share = FindPackageShare(package='erl2_amirmat98').find('erl2_amirmat98')
+    default_model_path = os.path.join(erl2_amirmat98_path_share, 'urdf/robot.urdf')
+    default_world_path = os.path.join(erl2_amirmat98_path_share, 'worlds/assignment2.world')
+    config_path = os.path.join(erl2_amirmat98_path_share, 'config')
+    models_path = os.path.join(erl2_amirmat98_path_share, "models")
+    pddl_path = os.path.join(erl2_amirmat98_path_share, "pddl")
     with open(default_model_path, 'r') as infp:
         robot_desc = infp.read()
 
-    gazebo_model_path = EnvironmentVariable(
-        "GAZEBO_MODEL_PATH", default_value="")
+    gazebo_model_path = EnvironmentVariable("GAZEBO_MODEL_PATH", default_value="")
     gazebo_model_path = [gazebo_model_path, ":", models_path]
 
     robot_state_publisher_node = Node(
@@ -79,21 +75,21 @@ def generate_launch_description():
     )
 
     move_to_min = Node(
-        package='assignment2_exprob_tm',
+        package='erl2_amirmat98',
         executable='move_to_min',
         name='move_to_min',
         output='screen',
         parameters=[])
 
     move_cmd = Node(
-        package='assignment2_exprob_tm',
+        package='erl2_amirmat98',
         executable='move_action_node',
         name='move_action_node',
         output='screen',
         parameters=[])
 
     explore_waypoint_cmd = Node(
-        package='assignment2_exprob_tm',
+        package='erl2_amirmat98',
         executable='explore_waypoint_action_node',
         name='explore_waypoint_action_node',
         output='screen',
