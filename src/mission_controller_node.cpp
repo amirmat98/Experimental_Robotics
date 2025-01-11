@@ -1,6 +1,8 @@
 #include <algorithm>
 #include <climits>
+#include <iostream>
 #include <iomanip>
+#include <cstdlib>
 #include <plansys2_pddl_parser/Utils.h>
 
 #include <memory>
@@ -11,6 +13,10 @@
 #include "plansys2_executor/ExecutorClient.hpp"
 #include "plansys2_planner/PlannerClient.hpp"
 #include "plansys2_problem_expert/ProblemExpertClient.hpp"
+
+using namespace std;
+
+const int TIME_SLEEP = 10;
 
 class MissionController : public rclcpp::Node {
 public:
@@ -382,6 +388,22 @@ private:
   std::shared_ptr<plansys2::ExecutorClient> executor_client_;
 };
 
+void play_intro()
+{
+  cout<<"Hi!"<<endl;
+  cout<<"We are Amir and Sayna"<<endl;
+  cout<<"Welcome to the experimental robotics laboratory!"<<endl;
+  cout<<"Please Wait ..."<<endl;
+
+  for (int i = 0; i<TIME_SLEEP; i++)
+  {
+    cout<<"Please Wait "<< TIME_SLEEP - i << "seceonds!"<<endl;
+    // Wait 10 seconds for the system to be ready
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+  }
+  system("clear");
+}
+
 int main(int argc, char **argv) {
   rclcpp::init(argc, argv);
   auto node = std::make_shared<MissionController>();
@@ -389,6 +411,9 @@ int main(int argc, char **argv) {
   node->init();
 
   rclcpp::Rate rate(5);
+
+  play_intro();
+
   while (node->running && rclcpp::ok()) {
     node->step();
 
