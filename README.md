@@ -120,6 +120,12 @@ You can also run individual nodes for debugging purposes. Refer to the **Code Ov
 A simulation demonstrating the robot's navigation and task execution is provided. This simulation highlights the robot's capabilities in planning and executing actions within its environment.
 
 
+
+https://github.com/user-attachments/assets/c03ecc62-0d68-420e-8cf1-a9e5518f278e
+
+
+
+
 ---
 
 ## Future Improvements
