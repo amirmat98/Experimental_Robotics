@@ -282,56 +282,44 @@ You can visualize the system’s behavior in:
 
 ## Install and run
 
-### Prerequisites
-Use the following Docker image for the environment setup:
+
+The best way to run this package is to use this docker image. this container is a ubuntu 20 and [Ros2 foxy](https://docs.ros.org/en/foxy/index.html).
 
     https://hub.docker.com/r/carms84/noetic_ros2
 
-Install the necessary ROS2 packages:
+Then You should install the following packages:
 
-    sudo apt install ros-foxy-ros2-control
-    sudo apt install ros-foxy-ros2-controllers
-    sudo apt install ros-foxy-planning-system
+    apt install ros-foxy-ros2-control
+    apt install ros-foxy-ros2-controllers
+    apt install ros-foxy-nav2*
+    apt install ros-foxy-plansys2-*
+    apt install ros-foxy-slam-toolbox*
 
-### Installation
+After that you should clone two packages in your workspace's src folder. You need to go to the src folder of your workspace and then use below commands to clone the packages.
 
-1. Clone the repository and the required packages:
-
-    ```bash
     git clone -b Assignment2 https://github.com/amirmat98/Experimental_Robotics.git
+    
     git clone https://github.com/CarmineD8/ros2_aruco.git
-    ```
 
-2. Place the repositories in your ROS2 workspace's `src` folder:
+Now you should see two folder in your src folder with name of `Experimental_Robotics` and `ros2_aruco`.
 
-    ```bash
-    mv Experimental_Robotics ~/Second/A_WS/src
-    mv ros2_aruco ~/Second/A_WS/src
-    ```
+then get back to the root of your workspace and build packages.
 
-3. Build the workspace:
+        cd ..
 
-    ```bash
-    cd ~/Second/A_WS
-    colcon build
-    ```
+        source /opt/ros/foxy/setup.bash
 
-4. Source the workspace:
+        colcon build
 
-    ```bash
-    source /opt/ros/foxy/setup.bash
-    source install/setup.bash
-    ```
+        source install/setup.bash
 
-### Running the Package
+Now you can run the package. Use each command in the seprate terminal to run the package.
 
-To run the entire system, use:
++ `ros2 launch erl2_amirmat98 assignment2.launch.py`
++ `ros2 run erl2_amirmat98 mission_controller_node`
 
-    ```bash
-    ros2 launch erl2_amirmat98 assignment2.launch.py
-    ```
-
-You can also run individual nodes for debugging purposes. Refer to the **Code Overview** section for details.
+**Note:**
+In the some cases, you may face  some problems in running the nodes. Please be patient and if the node does not start run again both the launchfile and the mission_manager node.
 
 ---
 
