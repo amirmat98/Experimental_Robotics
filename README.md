@@ -47,7 +47,7 @@ The robot design for this assignment retains a mobile platform with components e
 ## Script
 Three main classes are implemented to achieve the project goals:
 
-1. **`MissionController`:** Manages the overall mission logic, handling goals and coordinating with other components.
+1. **`task_manager`:** Manages the overall mission logic, handling goals and coordinating with other components.
 2. **`ProblemExpertClient`:** Interfaces with the problem expert to add problem instances and goals.
 3. **`ExecutorClient`:** Executes planned actions by communicating with action servers.
 
